@@ -20,8 +20,8 @@ const resolvers = {
 
     // Mutations function to add/remove a profile and login
     Mutation: {
-        addProfile: async (parent, { name, email, password }) => {
-          const profile = await Profile.create({ name, email, password });
+        addProfile: async (parent, { name, password }) => {
+          const profile = await Profile.create({ name, password });
           const token = signToken(profile);
     
           return { token, profile };
@@ -29,8 +29,8 @@ const resolvers = {
         removeProfile: async (parent, { profileId }) => {
           return Profile.findOneAndDelete({ _id: profileId });
         },
-        login: async (parent, { email, password }) => {
-          const profile = await Profile.findOne({ email });
+        login: async (parent, { name, password }) => {
+          const profile = await Profile.findOne({ name });
     
           if (!profile) {
             throw AuthenticationError;
